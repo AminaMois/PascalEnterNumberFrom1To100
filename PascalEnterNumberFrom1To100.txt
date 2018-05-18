@@ -1,0 +1,113 @@
+{
+* if user enters letter instead of number
+* if number is negative
+* if m>n
+}
+{User enters number from 1 to 100. Program tells
+whether this particular number was entered before (during
+the last  work session) or not. If yes, it was entered 
+before, program responds with number of times this 
+particular number has repeated.}
+
+program EnterNumberFrom1to100;
+uses crt;
+
+
+Const n=100;
+Type MyArray=Array [1..n] of integer; 
+var A:MyArray;
+var i:integer;
+
+
+{
+Procedure ReadInteger reads the manually entered input and 
+checks weather the character is a number of another symbol.
+}
+
+
+procedure ReadInteger(i:string);
+var k, code:integer;
+switch:boolean;
+begin
+	readln(i);
+	val(i, k, code);
+	switch:=true;
+	repeat
+	if code<>0 then begin
+		switch:=false;
+		writeln('You did not enter number. Please try again.');
+		writeln('The number is: ');
+		readln(i);
+		val(i, k, code);
+		if code=0 then begin
+			switch:=true;
+		end else begin
+			switch:=false;
+		end;
+	end;
+	until switch=true;
+	if switch=true then begin
+		i:=str(k, i);
+	end;
+end;
+
+
+{Procedure SaveUserEnteredNumber reads and saves user
+entered number in an array with name MyArray
+as an array element A.}
+{
+m - number of elements in the array MyArray
+number - manually entered number (saved as element in the array MyArray)
+		This value 
+}
+Procedure SaveUserEnteredNumber(var m, number:integer);
+var i:integer;
+begin
+	if m<n then begin
+		inc(m);
+	end;
+	ReadInteger(number);
+	A[m]:=number;
+	//WriteLn(m);
+	//for i :=1 to m do begin
+		//WriteLn(A[i]);
+	//end;
+end;
+
+
+{Function CountHowManyTimesNumberRepeated counts number
+of times the last manually entered number repeated in the last
+session.}
+Function CountHowManyTimesNumberRepeated(m:integer; number:integer):integer;
+var i, k:integer;
+begin
+	k:=0;
+	for i:=1 to m do begin
+		if A[i]=number then begin
+			inc(k);
+		end;
+	end;
+	CountHowManyTimesNumberRepeated:=k;
+end;
+
+
+var m, number, RepeatTimes: integer;
+begin
+	m:=0;
+	Repeat
+		WriteLn ('Please enter number from 1 to 100.');
+		WriteLn ('Press 0 to exit.');
+		SaveUserEnteredNumber(m, number);
+		if number>0 then begin
+			RepeatTimes:=CountHowManyTimesNumberRepeated(m, number);
+		end;
+		if ((number>0) and (RepeatTimes=1)) then begin
+			WriteLn('You entered an original number, it was not entered before.');
+		end else begin
+			if number>0 then begin
+				WriteLn('Number ',number,' was entered total ', RepeatTimes,' times.');
+			end;
+		end;
+	until number=0;
+	//ReadLn;
+end.
